@@ -53,7 +53,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
-  document.querySelector('#received').innerHTML = "";
+  document.querySelector('#emails-view').innerHTML = "";
 
   //peticion get
   fetch('/emails/'.concat(mailbox))
@@ -61,11 +61,17 @@ function load_mailbox(mailbox) {
     .then(emails => {
       // Print emails
       console.log(emails);
-
+      var caja = document.getElementById('emails-view');
       emails.forEach(email => {
-        const li = document.createElement('li');
-        li.innerHTML = email.id;
-        document.querySelector('#received').append(li);
+        // const div = document.createElement('div',"email-cont");
+        // div.innerHTML = email.id;
+        
+        caja.innerHTML += '<div class="email-cont">' + 
+        '<p class="email-user"> '+  email.sender + '</p>'+
+        '<p class="email-subject"> '+  email.subject + '</p>'+
+        '<p class="email-body"> '+  email.body + '</p>'+   
+        '</div>';
+        //document.querySelector('#emails-view').append(div);
         
       });
       // ... do something else with emails ...

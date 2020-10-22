@@ -2,11 +2,3 @@ textarea {
     min-height: 400px;
 }
 
-.email-cont{
-    display: flex;
-    flex-direction: column;
-    height: 100px;
-    width: 300px;
-    background-color: aquamarine;
-
-}
