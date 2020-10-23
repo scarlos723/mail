@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
+  //close popup
+  // document.querySelector('#btn-close').addEventListener('click', ()=>{
+  //   document.querySelector('.overlay').style.display = 'none';
+  // });
+
 
 
 
@@ -25,8 +30,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function compose_email() {
 
   // Show compose view and hide other views
+  document.querySelector('.overlay').style.display = 'none';
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -45,6 +52,7 @@ function compose_email() {
 function load_mailbox(mailbox) {
 
   // Show the mailbox and hide other views
+  document.querySelector('.overlay').style.display = 'none';
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
   document.querySelector('#emails-view').innerHTML = "";
@@ -60,7 +68,7 @@ function load_mailbox(mailbox) {
       emails.forEach(email => {
 
         if (email.read == true) {
-          var back_color = "rgb(209, 209, 209);";
+          var back_color = "rgb(245, 245, 245);";
         } else {
           var back_color = "white";
         }
@@ -111,7 +119,7 @@ function show_email(id) {
         '<p id="time"> <strong> Timestamp: </strong>' + email.timestamp + '</p>' +
         '<div class="flex-cont">' +
         '<button onclick="reply_email(' + email.id + ');"class="btn btn-sm btn-outline-primary">Reply</button>' +
-        '<button onclick=""class="btn btn-sm btn-outline-primary">Archived</button>' +
+        '<button onclick="archived_email('+ email.id +');"class="btn btn-sm btn-outline-primary">Archived</button>' +
         '</div>' +
         '</div>' +
         '<hr color="blue" size=3>' +
@@ -147,3 +155,28 @@ function reply_email(id) {
 
 
 }
+
+
+function archived_email(id){
+  fetch('/emails/'.concat(id), {
+    method: 'PUT',
+    body: JSON.stringify({
+        archived: true
+    })
+  });
+  document.querySelector('.overlay').style.display = 'flex';
+  document.querySelector('#btn-close').addEventListener('click', ()=>{
+    document.querySelector('.overlay').style.display = 'none';
+  });
+}
+
+
+
+
+// Para crear un elemento HTML y agregarle un controlador de eventos, puede usar código JavaScript como el siguiente:
+// const element = document.createElement('div');
+// element.innerHTML = 'This is the content of the div.';
+// element.addEventListener('click', function() {
+//     console.log('This element has been clicked!')
+// });
+// document.querySelector('#container').append(element);
