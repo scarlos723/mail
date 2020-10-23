@@ -9,11 +9,11 @@
         <style>
             .email-cont{
                 display: flex;
-                flex-direction: column;
+                justify-content: space-between;
                 border: 1px solid rgb(209, 209, 209);
                 border-radius: 5px;
                 height: auto;
-                width: 300px;
+                width: 100%;
                 background-color: white;
                 padding: 5px;
 
@@ -24,18 +24,33 @@
                   
             }
             
-            .email-cont>p{
-                margin: 1px;
+            .email-cont-col{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                border: 1px solid rgb(209, 209, 209);
+                border-radius: 5px;
+                height: auto;
+                width: 100%;
+                background-color: white;
+                padding: 5px;
             }
+            
             .email-user{
                 font-size: 16px;
             }
             .email-subject{
-                font-size: 14px;
+                font-size: 16px;
             }
             .email-body{
-                font-size: 10px;
+                font-size: 16px;
                 color: grey;
+            }
+            .flex-cont{
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                width: 150px;
             }
             
         </style>

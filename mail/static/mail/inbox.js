@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   load_mailbox('inbox');
 
 
-  
+
 
 
 });
@@ -65,10 +65,11 @@ function load_mailbox(mailbox) {
           var back_color = "white";
         }
         caja.innerHTML += '<div class="email-cont" style="background-color:' + back_color + ';">' +
-          
-          '<p  onclick="show_email('+ email.id +');" class="email-user" > ' + email.sender + '</p>' +
-          '<p class="email-subject"> ' + email.subject + '</p>' +
-          '<p class="email-body"> '+ email.body + '</p>' +
+
+          '<p  onclick="show_email(' + email.id + ');" class="email-user" > <strong> ' + email.sender +
+          ' </strong>' + email.subject + '</p>' +
+          //'<p class="email-subject"> ' + email.subject + '</p>' +
+          '<p class="email-body"> ' + email.timestamp + '</p>' +
           '</div>';
         //document.querySelector('#emails-view').append(div);
 
@@ -91,7 +92,7 @@ function show_email(id) {
   document.querySelector('#emails-view').innerHTML = "";
 
   //document.querySelector('#test').innerHTML=`<h2> Mensaje de prueba el id es ${id} </2>`;
-  
+
   fetch('/emails/'.concat(id))
     .then(response => response.json())
     .then(email => {
@@ -102,12 +103,47 @@ function show_email(id) {
       var back_color = "white";
       // ... do something else with email ...
 
-    caja.innerHTML = '<div class="email-cont" style="background-color:' + back_color + ';">' +
-          
-          '<p  onclick="show_email('+ email.id +');" class="email-user" > ' + email.sender + '</p>' +
-          '<p class="email-subject"> ' + email.subject + '</p>' +
-          '<p class="email-body"> '+ email.body + '</p>' +
-          '</div>';
+      caja.innerHTML = '<div >' +
+
+        '<p id="TX"> <strong> From: </strong>' + email.sender + '</p>' +
+        '<p id="RX"> <strong> To: </strong>' + email.recipients + '</p>' +
+        '<p id="subject"> <strong> Subject: </strong>' + email.subject +
+        '<p id="time"> <strong> Timestamp: </strong>' + email.timestamp + '</p>' +
+        '<div class="flex-cont">' +
+        '<button onclick="reply_email(' + email.id + ');"class="btn btn-sm btn-outline-primary">Reply</button>' +
+        '<button onclick=""class="btn btn-sm btn-outline-primary">Archived</button>' +
+        '</div>' +
+        '</div>' +
+        '<hr color="blue" size=3>' +
+
+        '<div>' +
+        '<p id="body"> ' + email.body + '</p>' +
+        '</div>';
     });
-  
+
+}
+
+function reply_email(id) {
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+
+  fetch('/emails/'.concat(id))
+    .then(response => response.json())
+    .then(email => {
+      // Print emails
+      console.log(email);
+
+      var caja = document.getElementById('emails-view');
+      var back_color = "white";
+      // ... do something else with email ...
+      document.querySelector('#compose-recipients').value = email.sender;
+      document.querySelector('#compose-subject').value = 'RE: ' + email.subject;
+      document.querySelector('#compose-body').value = 'On ' + email.timestamp + email.sender + ' wrote: ' + email.body;
+    });
+
+
+
+
 }
