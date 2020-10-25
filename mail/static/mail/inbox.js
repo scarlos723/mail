@@ -86,9 +86,10 @@ function load_mailbox(mailbox) {
       var caja = document.getElementById('emails-view');
       emails.forEach(email => {
 
-        if (email.read == true) {
-          var back_color = "rgb(245, 245, 245);";
-        } else {
+        if (email.read == false) {
+          var back_color = "rgb(240, 240, 240);";
+        } 
+        if (email.read == true){
           var back_color = "white";
         }
         caja.innerHTML += '<div id="email-'+ email.id+'" class="email-cont" style="background-color:' + back_color + ';">' +
@@ -146,6 +147,12 @@ function show_email(id) {
   document.querySelector('#emails-view').innerHTML = "";
 
   //document.querySelector('#test').innerHTML=`<h2> Mensaje de prueba el id es ${id} </2>`;
+  fetch('/emails/'.concat(id), {
+    method: 'PUT',
+    body: JSON.stringify({
+        read:true
+    })
+  })
 
   fetch('/emails/'.concat(id))
     .then(response => response.json())
